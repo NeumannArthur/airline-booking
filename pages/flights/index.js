@@ -1,16 +1,14 @@
 import Axios from "axios";
 
-const secret = 'S5PGlKbSQfFjizHa';
-const key = 'bGOuaUMr96iiVJXmsIA3j5wmd1aJEG6c';
-
-const tokenOutput = ({token}) => {
-    // console.log("the token: " + token);
+const flightOutput = ({tripData}) => {
+    console.log(tripData);
     return (
         <div>
-            {token.map((thing) => {
+            {tripData.suggestions.map((item) => {
                 return (
                     <div>
-                        <h1>{thing}</h1>
+                        <h1>{item.text}</h1>
+                        <p>{item.text}</p>
                     </div>
                 )
             })}
@@ -18,15 +16,16 @@ const tokenOutput = ({token}) => {
     )
 }
 
-export const getServerSideProps = async() => {
-    const data = await Axios.get("https://test.api.amadeus.com/v1/security/oauth2/token/Content-Type=application/x-www-form-urlencoded/grant_type=client_credentials&client_id=bGOuaUMr96iiVJXmsIA3j5wmd1aJEG6c&client_secret=S5PGlKbSQfFjizHa");
-    // console.log("res: " +  data);
+export const getStaticProps = async () => {
+    const res = await Axios.get("https://api.flightapi.io/place/62dee429ddfd5999cc5569f3/london");
+    console.log(typeof data);
+    // api Key: 62dee429ddfd5999cc5569f3
     
     return {
         props: {
-            token: data.data,
+            tripData: res.data,
         },
-    }
+    };
 }
 
-export default tokenOutput;
+export default flightOutput;
